@@ -3,7 +3,6 @@ package org.mcnz.jpa.models;
 import jakarta.persistence.*;
 import lombok.*;
 import org.mcnz.jpa.models.users.SpecialistUser;
-import org.mcnz.jpa.models.users.User;
 
 import java.util.List;
 

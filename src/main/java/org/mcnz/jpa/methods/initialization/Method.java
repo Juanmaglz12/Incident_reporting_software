@@ -166,9 +166,9 @@ public class Method {
             // Paso 4: Crear un nuevo incidente y asignar referencias a entidades existentes
             Incident incidente = new Incident();
             incidente.setClient(client);
-            incidente.setTypeProblem(typeProblem);
-            incidente.setProblemDescription(problemDescription);
-            incidente.setHoursToResolveIssue(hoursToResolve);
+            //incidente.setTypeProblem(typeProblem);
+            //incidente.setProblemDescription(problemDescription);
+            //incidente.setHoursToResolveIssue(hoursToResolve);
             incidente.setOfferedService(offServ);
             incidente.setSpecialistAssigned(specUser);
             incidente.setIncidentState(state);

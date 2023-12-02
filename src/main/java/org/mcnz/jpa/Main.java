@@ -1,7 +1,9 @@
 package org.mcnz.jpa;
 
 import org.mcnz.jpa.methods.MenuMethods;
+import org.mcnz.jpa.methods.ModuloMesaDeAyuda;
 import org.mcnz.jpa.methods.initialization.Initialization;
+import org.mcnz.jpa.models.users.HelpDeskUser;
 
 public class Main {
     public static void main(String[] args) {

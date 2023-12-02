@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.mcnz.jpa.models.users.SpecialistUser;
 
+import java.time.LocalDate;
+
 
 @Entity
 @AllArgsConstructor
@@ -15,13 +17,19 @@ public class Incident {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idIncident;
     @Column(nullable = false)
-    private String typeProblem;
-    @Column(nullable = false)
-    private String problemDescription;
-    @Column(nullable = true)
-    private int hoursToResolveIssue;
+    private String descriptionProblem;
     @Column(nullable = false)
     private String IncidentState;
+    @Column
+    private String specialistConsiderations;
+    @Column (nullable = false)
+    private LocalDate IncidentDate;
+    @Column
+    private LocalDate resolutionDate;
+
+    @ManyToOne
+    @JoinColumn(name = "id_type_problem", nullable = false)
+    private ProblemType typeProblem;
 
     @ManyToOne
     @JoinColumn(name = "id_offered_service", nullable = false)
