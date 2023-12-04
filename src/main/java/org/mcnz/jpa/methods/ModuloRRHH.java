@@ -20,7 +20,6 @@ public class ModuloRRHH {
         System.out.println("4. Baja empleados");
         System.out.println("5. Reporte de desempeño");
         System.out.println("8. Volver");
-        System.out.println("9. Salir");
         Scanner sc = new Scanner(System.in);
         String opcion = sc.nextLine();
 
@@ -46,8 +45,6 @@ public class ModuloRRHH {
                 break;
             case "8":
                 MenuMethods.menu();
-                break;
-            case "9":
                 break;
             default:
                 System.out.println("Opción no válida");

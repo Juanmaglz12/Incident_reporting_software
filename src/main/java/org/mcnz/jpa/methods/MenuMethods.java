@@ -1,5 +1,9 @@
 package org.mcnz.jpa.methods;
 
+import org.mcnz.jpa.methods.validadorEntradas.ValidadorEntradas;
+import org.mcnz.jpa.methods.validadorEntradas.ValidarUsuario;
+import org.mcnz.jpa.models.users.SpecialistUser;
+
 import java.util.Scanner;
 public class MenuMethods {
 
@@ -16,20 +20,24 @@ public class MenuMethods {
         String opcion = sc.nextLine();
         switch (opcion) {
             case "1":
+                ValidarUsuario.validarUsuarioRrhh();
                 System.out.println("Bienvenido al modulo de RRHH");
                 ModuloRRHH.validarUserRRHH();
                 break;
             case "2":
+                ValidarUsuario.validarUsuarioComercial();
                 System.out.println("Bienvenido al modulo Comercial");
                 ModuloComercial.validarUserComercial();
                 break;
             case "3":
+                ValidarUsuario.validarUsuarioMesaDeAyuda();
                 System.out.println("Bienvenido al modulo de Mesa de Ayuda");
                 ModuloMesaDeAyuda.validarUserMesaDeAyuda();
                 break;
             case "4":
+                SpecialistUser user = ValidarUsuario.validarUsuarioEspecialista();
                 System.out.println("Bienvenido al modulo de Especialistas");
-                ModuloEspecialista.moduloEspecialista();
+                ModuloEspecialista.moduloEspecialista(user);
                 break;
             case "5":
                 break;

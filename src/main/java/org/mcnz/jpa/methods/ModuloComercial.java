@@ -48,7 +48,6 @@ public class ModuloComercial {
             System.out.println("Clientes");
             System.out.println("**************");
 
-            // Consulta JPQL con JOIN FETCH para recuperar servicios contratados de manera anticipada
             String jpql = "SELECT DISTINCT c FROM Client c LEFT JOIN FETCH c.contractedOfferedServices";
             TypedQuery<Client> query = entityManager.createQuery(jpql, Client.class);
             List<Client> clientes = query.getResultList();
