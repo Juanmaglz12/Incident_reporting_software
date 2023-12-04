@@ -7,6 +7,7 @@ import org.mcnz.jpa.models.OfferedService;
 import org.mcnz.jpa.models.users.RrhhUser;
 
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -91,45 +92,90 @@ public class ModuloComercial {
 
     public static void altaCliente() {
         Scanner sc = new Scanner(System.in);
-        System.out.println("Ingrese la razon social de la empresa o presione 1 para cancelar");
-        String razonSocial = ValidadorEntradas.validarEntrada2(40, ModuloComercial::moduloComercial);
-        System.out.println("Ingrese el cuit  de la empresa o presione 1 para cancelar");
-        String cuit = ValidadorEntradas.validarEntrada2(40, ModuloComercial::moduloComercial);
-        System.out.println("Ingrese email de la empresa o presione 1 para cancelar");
-        String email = ValidadorEntradas.validarEntrada2(40, ModuloComercial::moduloComercial);
-        System.out.println("Agregue los servicios que desea contratar el cliente y presione, luego presione 6 para confirmar");
-
-        System.out.println("1. SAP");
-        System.out.println("2. Tango");
-        System.out.println("3. Windows");
-        System.out.println("4. MacOs");
-        System.out.println("5. Linux Ubuntu");
-        String idoffserv = sc.nextLine();
-
+        System.out.println("Ingrese la razon social de la empresa");
+        String razonSocial = ValidadorEntradas.validarEntrada();
+        System.out.println("Ingrese el cuit  de la empresa");
+        String cuit = ValidadorEntradas.validarEntrada();
+        System.out.println("Ingrese email de la empresa");
+        String email = ValidadorEntradas.validarEntrada();
+        List<OfferedService> listaServicios = null;
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("jpa");
         EntityManager entityManager = emf.createEntityManager();
+        String opcion = null;
         entityManager.getTransaction().begin();
 
+        List <OfferedService> servicios = agregarServiciosAlCliente(sc,emf, entityManager);
 
-        String jpql = "SELECT u FROM OfferedService u WHERE idOfferedService = :idoffserv";
-        TypedQuery<OfferedService> query = entityManager.createQuery(jpql, OfferedService.class);
-        query.setParameter("offeredServiceName", idoffserv);
-        List<OfferedService> listaServicios = query.getResultList();
+        System.out.println("Razon social: " + razonSocial);
+        System.out.println("Cuit: " + cuit);
+        System.out.println("Email: " + email);
+        System.out.println("Servicios");
+        for(OfferedService of : servicios){
+            System.out.println(of.getOfferedServiceName());
+        }
 
         Client cliente =  new Client();
         cliente.setBusinessName(razonSocial);
         cliente.setCuit(cuit);
         cliente.setMail(email);
-        cliente.setContractedOfferedServices(listaServicios);
-
-
+        cliente.setContractedOfferedServices(servicios);
         entityManager.persist(cliente);
         entityManager.getTransaction().commit();
-
         System.out.println("Alta exitosa");
         ModuloComercial.moduloComercial();
-
     }
+
+    private static List<OfferedService> agregarServiciosAlCliente(Scanner sc, EntityManagerFactory emf, EntityManager entityManager) {
+        Scanner scanner = new Scanner(System.in);
+        List<OfferedService> serviciosContratados = new ArrayList<>();
+
+        while (true) {
+            System.out.println("1. Ingresar servicio");
+            System.out.println("2. Finalizar");
+
+            String opcion = scanner.nextLine();
+
+            switch (opcion) {
+                case "1" -> {
+                    System.out.println("Seleccione el servicio");
+                    System.out.println("1. SAP");
+                    System.out.println("2. Tango");
+                    System.out.println("3. Windows");
+                    System.out.println("4. MacOs");
+                    System.out.println("5. Linux Ubuntu");
+                    String servicioElegido = scanner.nextLine();
+                    switch (servicioElegido) {
+                        case "1" -> servicioElegido = "SAP";
+                        case "2" -> servicioElegido = "Tango";
+                        case "3" -> servicioElegido = "Windows";
+                        case "4" -> servicioElegido = "MacOs";
+                        case "5" -> servicioElegido = "Linux Ubuntu";
+                        default ->
+                        {
+                            System.out.println("Opción inválida");
+                            continue;
+                        }
+
+                    }
+                    try {
+                        String jpql = "SELECT os FROM OfferedService os WHERE offeredServiceName = :opcion";
+                        TypedQuery<OfferedService> query = entityManager.createQuery(jpql, OfferedService.class);
+                        query.setParameter("opcion", servicioElegido);
+                        OfferedService result = query.getSingleResult();
+                        serviciosContratados.add(result);
+                        System.out.println("Servicio agregado: " + servicioElegido);
+                    } catch (NoResultException e) {
+                        System.out.println("Servicio no encontrado");
+                    }
+                }
+                case "2" -> {
+                    return serviciosContratados;
+                }
+                default -> System.out.println("Opción inválida");
+            }
+        }
+    }
+
 
     public static void modificarCliente() {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("jpa");
@@ -162,19 +208,20 @@ public class ModuloComercial {
 
             String nuevoValor;
             switch (opcion) {
-                case 1:
+                case 1 -> {
                     System.out.println("Ingrese la nueva razón social:");
                     nuevoValor = sc.nextLine();
                     cliente.setBusinessName(nuevoValor);
-                    break;
-                case 2:
+                }
+                case 2 -> {
                     System.out.println("Ingrese el nuevo Cuit:");
                     nuevoValor = sc.nextLine();
                     cliente.setCuit(nuevoValor);
-                    break;
-                default:
+                }
+                default -> {
                     System.out.println("Opción no válida");
                     return;
+                }
             }
 
             // Realizar la actualización

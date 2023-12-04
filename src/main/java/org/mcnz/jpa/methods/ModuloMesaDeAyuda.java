@@ -15,22 +15,24 @@ import java.util.Scanner;
 
 public class ModuloMesaDeAyuda {
 
+    public static void validarUserMesaDeAyuda() {
+        ModuloMesaDeAyuda.moduloMesaDeAyuda();
+    }
+
     public static void moduloMesaDeAyuda() {
         System.out.println("Elija una opción");
         System.out.println("1. Ver incidentes");
         System.out.println("2. Alta incidente");
-        System.out.println("3. Reporte diario de tecnicos");
-        System.out.println("4. Volver");
-        System.out.println("5. Salir");
+        System.out.println("3. Volver");
+        System.out.println("4. Salir");
         Scanner sc = new Scanner(System.in);
         String opcion = sc.nextLine();
 
         switch (opcion) {
-            case "1" -> ModuloMesaDeAyuda.verIncidentes();
-            case "2" -> ModuloMesaDeAyuda.altaIncidente();
-            case "3" -> ModuloMesaDeAyuda.reporteDiarioDeEspecialistas();
-            case "4" -> MenuMethods.menu();
-            case "5" -> {
+            case "1" -> verIncidentes();
+            case "2" -> altaIncidente();
+            case "3" -> MenuMethods.menu();
+            case "4" -> {
             }
             default -> {
                 System.out.println("Opción no válida");
@@ -41,101 +43,160 @@ public class ModuloMesaDeAyuda {
 
     private static void verIncidentes(){
         Scanner sc = new Scanner(System.in);
-        String opcion = sc.nextLine();
         System.out.println("Ingrese una opción");
+        System.out.println("1. Ver todos los incidentes");
+        System.out.println("2. Ver incidentes recibidos");
+        System.out.println("3. Ver incidentes resueltos");
+        System.out.println("4. Volver");
+
+        String opcion = sc.nextLine();
         switch (opcion) {
             case "1" -> verTodosLosIncidentes();
             case "2" -> verIncidentesRecibidos();
-            case "3" -> verIncidentesEnProcesoDeResolucion();
-            case "4" -> verIncidentesSolucionados();
-            case "5" -> buscarIncidentesPorCliente();
+            case "3" -> verIncidentesSolucionados();
+            case "4" -> moduloMesaDeAyuda();
             default -> {
                 System.out.println("Opción no válida");
                 moduloMesaDeAyuda();
             }
         }
-
-        verIncidentesRecibidos();
-
+        moduloMesaDeAyuda();
     }
 
-    private static void buscarIncidentesPorCliente() {
+    private static void verTodosLosIncidentes() {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("jpa");
         EntityManager entityManager = emf.createEntityManager();
         Scanner sc = new Scanner(System.in);
 
-        System.out.println("Ingrese el id del cliente por el cual desea consultar los incidentes");
-        Long idCliente = sc.nextLong();
-
         entityManager.getTransaction().begin();
         System.out.println("**************");
-        System.out.println("Incidentes del cliente");
+        System.out.println("Incidentes");
         System.out.println("**************");
 
         try{
-            String jpql = "SELECT i FROM Incident i LEFT JOIN FETCH c.client WHERE c.idCliente = idCliente";
+            String jpql = "SELECT i FROM Incident i";
             TypedQuery<Incident> query = entityManager.createQuery(jpql, Incident.class);
-            query.setParameter("idCliente", idCliente);
             List<Incident> incidents = query.getResultList();
 
-            // Mostrar la información
             for (Incident incident : incidents) {
                 System.out.println("--------------------");
-                System.out.println(incident.getClient().getIdClient());
-                System.out.println(incident.getClient().getBusinessName());
-                System.out.println(incident.getIdIncident());
-                System.out.println(incident.getTypeProblem());
-                System.out.println(incident.getDescriptionProblem());
-                System.out.println(incident.getOfferedService().getOfferedServiceName());
-                System.out.println(incident.getIncidentState());
-                System.out.println(incident.getIncidentDate());
-                System.out.println(incident.getResolutionDate());
-                System.out.println(incident.getSpecialistAssigned().getUserName());
+                System.out.println("Id: " + incident.getClient().getIdClient());
+                System.out.println("Cliente : " + incident.getClient().getBusinessName());
+                System.out.println("Id Cliente: " + incident.getIdIncident());
+                System.out.println("Tipo de problema: " + incident.getTypeProblem());
+                System.out.println("Descripcion del problema: " + incident.getDescriptionProblem());
+                System.out.println("Servicio: " + incident.getOfferedService().getOfferedServiceName());
+                System.out.println("Estado del incidente: " + incident.getIncidentState());
+                System.out.println("Fecha del incidente: " + incident.getIncidentDate());
+                System.out.println("Fecha de resolución: " + incident.getResolutionDate());
+                System.out.println("Especialista asignado: " + incident.getSpecialistAssigned().getUserName());
                 System.out.println(incident.getSpecialistAssigned().getName());
                 System.out.println(incident.getSpecialistAssigned().getLastName());
                 System.out.println("--------------------");
             }
-
-            // Commit de la transacción
             entityManager.getTransaction().commit();
         } catch (Exception e) {
-            // Manejar la excepción
+            System.out.println(e);
             if (entityManager.getTransaction().isActive()) {
                 entityManager.getTransaction().rollback();
             }
             e.printStackTrace();
         } finally {
-            // Cerrar el EntityManager y el EntityManagerFactory
             entityManager.close();
             emf.close();
         }
     }
 
     private static void verIncidentesSolucionados() {
-    }
-
-    private static void verIncidentesEnProcesoDeResolucion() {
-    }
-
-    private static void verTodosLosIncidentes() {
-    }
-
-    public static void reporteDiarioDeEspecialistas() {
-        System.out.println("Este es el reporte diario");
-        System.out.println("1. Volver");
-        System.out.println("2. Salir");
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("jpa");
+        EntityManager entityManager = emf.createEntityManager();
         Scanner sc = new Scanner(System.in);
-        String opcion = sc.nextLine();
-        switch (opcion) {
-            case "1":
-                ModuloMesaDeAyuda.moduloMesaDeAyuda();
-                break;
-            case "2":
-                break;
-            default:
-                System.out.println("Opción no válida");
-        }
 
+        entityManager.getTransaction().begin();
+        System.out.println("**************");
+        System.out.println("Incidentes solucionados");
+        System.out.println("**************");
+
+        try {
+            String jpql = "SELECT i FROM Incident i WEHERE incidentState = SOLUCIONADOS";
+            TypedQuery<Incident> query = entityManager.createQuery(jpql, Incident.class);
+            List<Incident> incidents = query.getResultList();
+
+            for (Incident incident : incidents) {
+                System.out.println("--------------------");
+                System.out.println("Id: " + incident.getClient().getIdClient());
+                System.out.println("Cliente : " + incident.getClient().getBusinessName());
+                System.out.println("Id Cliente: " + incident.getIdIncident());
+                System.out.println("Tipo de problema: " + incident.getTypeProblem());
+                System.out.println("Descripcion del problema: " + incident.getDescriptionProblem());
+                System.out.println("Servicio: " + incident.getOfferedService().getOfferedServiceName());
+                System.out.println("Estado del incidente: " + incident.getIncidentState());
+                System.out.println("Fecha del incidente: " + incident.getIncidentDate());
+                System.out.println("Fecha de resolución: " + incident.getResolutionDate());
+                System.out.println("Especialista asignado: " + incident.getSpecialistAssigned().getUserName());
+                System.out.println(incident.getSpecialistAssigned().getName());
+                System.out.println(incident.getSpecialistAssigned().getLastName());
+                System.out.println("--------------------");
+            }
+            entityManager.getTransaction().commit();
+        } catch (Exception e) {
+            System.out.println(e);
+            if (entityManager.getTransaction().isActive()) {
+                entityManager.getTransaction().rollback();
+            }
+            e.printStackTrace();
+        } finally {
+            entityManager.close();
+            emf.close();
+        }
+        moduloMesaDeAyuda();
+    }
+
+
+
+    public static void verIncidentesRecibidos() {
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("jpa");
+        EntityManager entityManager = emf.createEntityManager();
+        Scanner sc = new Scanner(System.in);
+
+        entityManager.getTransaction().begin();
+        System.out.println("**************");
+        System.out.println("Incidentes recibidos");
+        System.out.println("**************");
+
+        try {
+            String jpql = "SELECT i FROM Incident i WEHERE incidentState = RECIBIDO";
+            TypedQuery<Incident> query = entityManager.createQuery(jpql, Incident.class);
+            List<Incident> incidents = query.getResultList();
+
+            for (Incident incident : incidents) {
+                System.out.println("--------------------");
+                System.out.println("Id: " + incident.getClient().getIdClient());
+                System.out.println("Cliente : " + incident.getClient().getBusinessName());
+                System.out.println("Id Cliente: " + incident.getIdIncident());
+                System.out.println("Tipo de problema: " + incident.getTypeProblem());
+                System.out.println("Descripcion del problema: " + incident.getDescriptionProblem());
+                System.out.println("Servicio: " + incident.getOfferedService().getOfferedServiceName());
+                System.out.println("Estado del incidente: " + incident.getIncidentState());
+                System.out.println("Fecha del incidente: " + incident.getIncidentDate());
+                System.out.println("Fecha de resolución: " + incident.getResolutionDate());
+                System.out.println("Especialista asignado: " + incident.getSpecialistAssigned().getUserName());
+                System.out.println(incident.getSpecialistAssigned().getName());
+                System.out.println(incident.getSpecialistAssigned().getLastName());
+                System.out.println("--------------------");
+            }
+            entityManager.getTransaction().commit();
+        } catch (Exception e) {
+            System.out.println(e);
+            if (entityManager.getTransaction().isActive()) {
+                entityManager.getTransaction().rollback();
+            }
+            e.printStackTrace();
+        } finally {
+            entityManager.close();
+            emf.close();
+        }
+        moduloMesaDeAyuda();
     }
 
     public static void altaIncidente() {
@@ -172,6 +233,7 @@ public class ModuloMesaDeAyuda {
         incident.setSpecialistAssigned(especialista);
         incident.setIncidentDate(LocalDate.now());
         incident.setIncidentState("RECIBIDO");
+        incident.setResolutionDate(LocalDate.now().plusDays(tipoProblema.getDaysToResolution()));
         entityManager.persist(incident);
         entityManager.getTransaction().commit();
 
@@ -458,79 +520,5 @@ public class ModuloMesaDeAyuda {
             };
         }
         return especialistaElegido;
-    }
-
-    public static void verIncidentesRecibidos() {
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("jpa");
-        EntityManager entityManager = emf.createEntityManager();
-        OfferedService servicio;
-
-        try {
-
-            System.out.println("**************");
-            System.out.println("Incidentes recibidos");
-            System.out.println("**************");
-
-            String jpql = "SELECT i FROM Incident i WHERE IncidentState = 'RECIBIDO'";
-            TypedQuery<Incident> query = entityManager.createQuery(jpql, Incident.class);
-            List<Incident> incidents = query.getResultList();
-
-            for (Incident incidente : incidents) {
-                System.out.println("--------------------");
-                System.out.println("Id: " + incidente.getIdIncident());
-
-                // Consulta JPQL para obtener el Cliente asociado al Incidente
-                String jpql2 = "SELECT c FROM Client c WHERE c.idClient = :clientId";
-                TypedQuery<Client> query2 = entityManager.createQuery(jpql2, Client.class);
-                query2.setParameter("clientId", incidente.getClient().getIdClient()); // Utiliza el ID del Cliente
-
-                // Obtener el Cliente asociado al Incidente
-                Client cliente = query2.getSingleResult();
-
-                System.out.println("Id Cliente: " + cliente.getIdClient() + " -- Razon social: " + cliente.getBusinessName());
-
-                // Consulta JPQL para obtener el Servicio asociado al Incidente
-                String jpql3 = "SELECT i FROM OfferedService i WHERE i.idOfferedService = :offeredServiceId";
-                TypedQuery<OfferedService> query3 = entityManager.createQuery(jpql3, OfferedService.class);
-                query3.setParameter("offeredServiceId", incidente.getOfferedService().getIdOfferedService());
-
-                // Obtener el Servicio  asociado al Incidente
-                servicio = query3.getSingleResult();
-
-                System.out.println("Servicio: " + servicio.getOfferedServiceName());
-                System.out.println("Tipo de problema: " + incidente.getTypeProblem());
-                //System.out.println("Descripción del problema: " + incidente.getProblemDescription());
-                //System.out.println("Horas de resolución: " + incidente.getHoursToResolveIssue());
-                System.out.println("Estado: " + incidente.getIncidentState());
-
-                // Consulta JPQL para obtener el Servicio asociado al Incidente
-                String jpql4 = "SELECT j FROM SpecialistUser j WHERE j.idUser = :userId";
-                TypedQuery<SpecialistUser> query4 = entityManager.createQuery(jpql4, SpecialistUser.class);
-                query4.setParameter("userId", incidente.getSpecialistAssigned().getIdUser());
-
-                // Obtener el Servicio  asociado al Incidente
-                SpecialistUser specialistUser = query4.getSingleResult();
-                System.out.println("Especialista asignado: " + specialistUser.getUserName());
-                System.out.println("--------------------");
-            }
-
-            entityManager.getTransaction().commit();
-        } catch (Exception e) {
-            // Manejar la excepción
-            if (entityManager.getTransaction().isActive()) {
-                entityManager.getTransaction().rollback();
-            }
-            e.printStackTrace();
-        } finally {
-            // Cerrar el EntityManager y el EntityManagerFactory
-            entityManager.close();
-            emf.close();
-        }
-
-        ModuloMesaDeAyuda.moduloMesaDeAyuda();
-    }
-
-    public static void validarUserMesaDeAyuda() {
-        ModuloMesaDeAyuda.moduloMesaDeAyuda();
     }
 }

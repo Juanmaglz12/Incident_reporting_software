@@ -20,6 +20,8 @@ public class ProblemType {
     private Long idTypeProblem;
     @Column(nullable = false)
     private String problemTypeName;
+    @Column()
+    private int daysToResolution;
     @ManyToOne
     @JoinColumn(name = "id_offered_service", nullable = false)
     private OfferedService service;

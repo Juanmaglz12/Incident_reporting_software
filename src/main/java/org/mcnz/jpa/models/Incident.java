@@ -19,11 +19,11 @@ public class Incident {
     @Column(nullable = false)
     private String descriptionProblem;
     @Column(nullable = false)
-    private String IncidentState;
+    private String incidentState;
     @Column
     private String specialistConsiderations;
     @Column (nullable = false)
-    private LocalDate IncidentDate;
+    private LocalDate incidentDate;
     @Column
     private LocalDate resolutionDate;
 

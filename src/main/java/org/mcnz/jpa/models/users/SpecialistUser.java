@@ -17,8 +17,6 @@ import java.util.List;
 @Getter
 public class SpecialistUser extends User {
 
-    @Column(nullable = false)
-    private boolean state;
 
     @ManyToMany
     @JoinTable(
