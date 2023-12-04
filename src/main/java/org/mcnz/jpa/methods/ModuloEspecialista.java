@@ -11,6 +11,8 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Scanner;
 
+import static java.lang.Integer.parseInt;
+
 public class ModuloEspecialista {
 
     public static SpecialistUser moduloEspecialista(SpecialistUser user) {
@@ -60,7 +62,7 @@ public class ModuloEspecialista {
             System.out.println("Especialidad: " + incidente.getOfferedService().getOfferedServiceName());
             System.out.println("Fecha de incidente: " + incidente.getIncidentDate());
             System.out.println("Fecha potencial de resolución: "+ incidente.getResolutionDate());
-            System.out.println("Tipo de problema: " + incidente.getTypeProblem());
+            System.out.println("Tipo de problema: " + incidente.getTypeProblem().getProblemTypeName());
             System.out.println("Descripcion del problema: " + incidente.getDescriptionProblem());
             System.out.println("Consideraciones: " + incidente.getSpecialistConsiderations());
 
@@ -68,18 +70,26 @@ public class ModuloEspecialista {
             System.out.println("Ingrese el dato que desea modificar");
             System.out.println("1. Fecha potencial de resolución: "+ incidente.getResolutionDate());
             System.out.println("2. Modificar consideraciones "+ incidente.getSpecialistConsiderations());
-            System.out.println("3. Volver");
+            System.out.println("3. Marcar como resuelto");
+            System.out.println("4. Volver");
             String opcion = sc.nextLine();
 
             switch (opcion){
                 case "1" -> {
                     System.out.println("Ingrese el día (dd)");
-                    int dia = sc.nextInt();
+                    String dia = sc.nextLine();
                     System.out.println("Ingrese el mes (mm)");
-                    int mes = sc.nextInt();
+                    String mes = sc.nextLine();
                     System.out.println("Ingrese el año (aaaa)");
-                    int ano = sc.nextInt();
-                    LocalDate fecha = LocalDate.of(ano,mes, dia);
+                    String ano = sc.nextLine();
+                    LocalDate fecha = null;
+                    try {
+                        fecha = LocalDate.of(parseInt(ano), parseInt(mes), parseInt(dia));
+                    }catch (Exception e){
+                        System.out.println(e);
+                        modificarIncidente(user);
+                    }
+
                     incidente.setResolutionDate(fecha);
                 }
                 case "2" -> {
@@ -87,7 +97,12 @@ public class ModuloEspecialista {
                     String texto = sc.nextLine();
                     incidente.setSpecialistConsiderations(texto);
                 }
-                case "3" -> moduloEspecialista(user);
+                case "3" -> {
+                    System.out.println("El incidente fue marcado como resuelto");
+                    System.out.println("Se le envió un email a " + incidente.getClient().getMail());
+                    incidente.setIncidentState("RESUELTO");
+                }
+                case "4" -> moduloEspecialista(user);
                 default -> {
                     System.out.println("Opción no válida");
                     modificarIncidente(user);

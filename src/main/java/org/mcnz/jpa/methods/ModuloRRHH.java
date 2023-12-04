@@ -19,7 +19,7 @@ public class ModuloRRHH {
         System.out.println("3. Modificar empleado");
         System.out.println("4. Baja empleados");
         System.out.println("5. Reporte de desempeño");
-        System.out.println("8. Volver");
+        System.out.println("6. Volver");
         Scanner sc = new Scanner(System.in);
         String opcion = sc.nextLine();
 
@@ -43,13 +43,621 @@ public class ModuloRRHH {
                 System.out.println("Reporte por desempeño");
                 reportePorDesempeno();
                 break;
-            case "8":
+            case "6":
                 MenuMethods.menu();
                 break;
             default:
                 System.out.println("Opción no válida");
                 ModuloRRHH.moduloRRHH();
         }
+    }
+
+    public static void verTodosLosEmpleados() {
+        ModuloRRHH.verEmpleadosRRHH();
+        ModuloRRHH.verEmpleadosComerciales();
+        ModuloRRHH.verEmpleadosMesaDeAyuda();
+        ModuloRRHH.verEmpleadosEspecialistas();
+
+        ModuloRRHH.moduloRRHH();
+    }
+
+    private static void verEmpleadosEspecialistas() {
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("jpa");
+        EntityManager entityManager = emf.createEntityManager();
+
+        entityManager.getTransaction().begin();
+        System.out.println("**************");
+        System.out.println("Empleados Especialistas");
+        System.out.println("**************");
+
+        try{
+            String jpql = "SELECT e FROM SpecialistUser e";
+            TypedQuery<SpecialistUser> query = entityManager.createQuery(jpql, SpecialistUser.class);
+            List<SpecialistUser> user = query.getResultList();
+
+            // Mostrar la información
+            for (SpecialistUser empleado : user) {
+                System.out.println("--------------------");
+                System.out.println("Id: " + empleado.getIdUser());
+                System.out.println("Nombre: " + empleado.getName());
+                System.out.println("Apellido: " + empleado.getUserName());
+                System.out.println("Nombre de usuario: " + empleado.getUserName());
+                System.out.println("email: " + empleado.getEmail());
+                System.out.println("Estado: " + empleado.getAlta());
+                System.out.println("Especialidades");
+                for(OfferedService ofSer : empleado.getOfferedServices()){
+                    System.out.println(ofSer.getOfferedServiceName());
+                }
+                System.out.println("--------------------");
+            }
+
+            // Commit de la transacción
+            entityManager.getTransaction().commit();
+        } catch (Exception e) {
+            System.out.println(e);
+            if (entityManager.getTransaction().isActive()) {
+                entityManager.getTransaction().rollback();
+            }
+            e.printStackTrace();
+        } finally {
+            // Cerrar el EntityManager y el EntityManagerFactory
+            entityManager.close();
+            emf.close();
+        }
+    }
+
+    private static void verEmpleadosMesaDeAyuda() {
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("jpa");
+        EntityManager entityManager = emf.createEntityManager();
+
+        entityManager.getTransaction().begin();
+        System.out.println("**************");
+        System.out.println("Empleados Mesa de ayuda");
+        System.out.println("**************");
+
+        try{
+            String jpql = "SELECT e FROM HelpDeskUser e";
+            TypedQuery<HelpDeskUser> query = entityManager.createQuery(jpql, HelpDeskUser.class);
+            List<HelpDeskUser> user = query.getResultList();
+
+            // Mostrar la información
+            for (HelpDeskUser empleado : user) {
+                System.out.println("--------------------");
+                System.out.println("Id: " + empleado.getIdUser());
+                System.out.println("Nombre: " + empleado.getName());
+                System.out.println("Apellido: " + empleado.getUserName());
+                System.out.println("Nombre de usuario: " + empleado.getUserName());
+                System.out.println("email: " + empleado.getEmail());
+                System.out.println("Estado: " + empleado.getAlta());
+                System.out.println("--------------------");
+            }
+
+            // Commit de la transacción
+            entityManager.getTransaction().commit();
+        } catch (Exception e) {
+            System.out.println(e);
+            if (entityManager.getTransaction().isActive()) {
+                entityManager.getTransaction().rollback();
+            }
+            e.printStackTrace();
+        } finally {
+            // Cerrar el EntityManager y el EntityManagerFactory
+            entityManager.close();
+            emf.close();
+        }
+
+
+    }
+
+    private static void verEmpleadosComerciales() {
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("jpa");
+        EntityManager entityManager = emf.createEntityManager();
+
+        entityManager.getTransaction().begin();
+        System.out.println("**************");
+        System.out.println("Empleados Comerciales");
+        System.out.println("**************");
+
+        try{
+            String jpql = "SELECT e FROM ComercialUser e";
+            TypedQuery<ComercialUser> query = entityManager.createQuery(jpql, ComercialUser.class);
+            List<ComercialUser> user = query.getResultList();
+
+            // Mostrar la información
+            for (ComercialUser empleado : user) {
+                System.out.println("--------------------");
+                System.out.println("Id: " + empleado.getIdUser());
+                System.out.println("Nombre: " + empleado.getName());
+                System.out.println("Apellido: " + empleado.getUserName());
+                System.out.println("Nombre de usuario: " + empleado.getUserName());
+                System.out.println("email: " + empleado.getEmail());
+                System.out.println("Estado: " + empleado.getAlta());
+                System.out.println("--------------------");
+            }
+
+            // Commit de la transacción
+            entityManager.getTransaction().commit();
+        } catch (Exception e) {
+            System.out.println(e);
+            if (entityManager.getTransaction().isActive()) {
+                entityManager.getTransaction().rollback();
+            }
+            e.printStackTrace();
+        } finally {
+            // Cerrar el EntityManager y el EntityManagerFactory
+            entityManager.close();
+            emf.close();
+        }
+    }
+
+    private static void verEmpleadosRRHH() {
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("jpa");
+        EntityManager entityManager = emf.createEntityManager();
+
+        entityManager.getTransaction().begin();
+        System.out.println("**************");
+        System.out.println("Empleados RRHH");
+        System.out.println("**************");
+
+        try{
+            String jpql = "SELECT e FROM RrhhUser e";
+            TypedQuery<RrhhUser> query = entityManager.createQuery(jpql, RrhhUser.class);
+            List<RrhhUser> user = query.getResultList();
+
+            // Mostrar la información
+            for (RrhhUser empleado : user) {
+                System.out.println("--------------------");
+                System.out.println("Id: " + empleado.getIdUser());
+                System.out.println("Nombre: " + empleado.getName());
+                System.out.println("Apellido: " + empleado.getUserName());
+                System.out.println("Nombre de usuario: " + empleado.getUserName());
+                System.out.println("email: " + empleado.getEmail());
+                System.out.println("Estado: " + empleado.getAlta());
+                System.out.println("--------------------");
+            }
+
+            // Commit de la transacción
+            entityManager.getTransaction().commit();
+        } catch (Exception e) {
+            System.out.println(e);
+            if (entityManager.getTransaction().isActive()) {
+                entityManager.getTransaction().rollback();
+            }
+            e.printStackTrace();
+        } finally {
+            // Cerrar el EntityManager y el EntityManagerFactory
+            entityManager.close();
+            emf.close();
+        }
+    }
+
+    private static void altaUser() {
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("Ingrese el nombre del nuevo usuario");
+        String nombre = ValidadorEntradas.validarEntrada();
+
+        System.out.println("Ingrese el apellido del nuevo usuario");
+        String apellido = ValidadorEntradas.validarEntrada();
+
+        System.out.println("Ingrese el username del nuevo usuario ");
+        String userName = ValidadorEntradas.validarEntrada();
+
+        System.out.println("Ingrese el email del nuevo usuario");
+        String email = ValidadorEntradas.validarEntrada();
+
+        asignarRol(nombre, apellido, userName, email);
+
+    }
+
+    private static void asignarRol(String nombre, String apellido, String userName, String email) {
+        Scanner scanner = new Scanner(System.in);
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("jpa");
+        EntityManager entityManager = emf.createEntityManager();
+        entityManager.getTransaction().begin();
+
+        System.out.println("Ingrese el numero de rol del nuevo usuario");
+        System.out.println("1. RRHH");
+        System.out.println("2. Comercial");
+        System.out.println("3. Mesa de ayuda");
+        System.out.println("4. Especialista");
+
+        String opcion = null;
+
+        opcion = scanner.nextLine();
+
+
+        switch (opcion) {
+            case "1" -> {
+                RrhhUser rrhhUser = new RrhhUser();
+                rrhhUser.setName(nombre.toUpperCase());
+                rrhhUser.setLastName(apellido.toUpperCase());
+                rrhhUser.setUserName(userName.toUpperCase());
+                rrhhUser.setEmail(email.toUpperCase());
+                rrhhUser.setAlta(true);
+                entityManager.persist(rrhhUser);
+            }
+            case "2" -> {
+                ComercialUser comercialUser = new ComercialUser();
+                comercialUser.setName(nombre.toUpperCase());
+                comercialUser.setLastName(apellido.toUpperCase());
+                comercialUser.setUserName(userName.toUpperCase());
+                comercialUser.setEmail(email.toUpperCase());
+                comercialUser.setAlta(true);
+                entityManager.persist(comercialUser);
+            }
+            case "3" -> {
+                HelpDeskUser helpDeskUser = new HelpDeskUser();
+                helpDeskUser.setName(nombre.toUpperCase());
+                helpDeskUser.setLastName(apellido.toUpperCase());
+                helpDeskUser.setUserName(userName.toUpperCase());
+                helpDeskUser.setEmail(email.toUpperCase());
+                helpDeskUser.setAlta(true);
+                entityManager.persist(helpDeskUser);
+            }
+            case "4" -> {
+                SpecialistUser specialistUser = new SpecialistUser();
+                specialistUser.setName(nombre.toUpperCase());
+                specialistUser.setLastName(apellido.toUpperCase());
+                specialistUser.setUserName(userName.toUpperCase());
+                specialistUser.setEmail(email.toUpperCase());
+                specialistUser.setAlta(true);
+                specialistUser.setOfferedServices(asignarEspecialidadesANuevoEspecialista());
+                entityManager.persist(specialistUser);
+            }
+            default -> {
+                System.out.println("opcion incorrecta");
+                asignarRol(nombre, apellido, userName, email);
+            }
+        }
+        entityManager.getTransaction().commit();
+        moduloRRHH();
+    }
+
+    private static void modificarEmpleadoComercial() {
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("jpa");
+        EntityManager entityManager = emf.createEntityManager();
+
+        System.out.println("Ingrese el username del empleado comercial a modificar");
+        Scanner sc = new Scanner(System.in);
+        String userName = sc.next();
+
+        try {
+            entityManager.getTransaction().begin();
+
+            String jpql = "SELECT c FROM ComercialUser c WHERE c.userName = :userName";
+            TypedQuery<ComercialUser> query = entityManager.createQuery(jpql, ComercialUser.class);
+            query.setParameter("userName", userName);
+
+            ComercialUser user = query.getSingleResult();
+
+            System.out.println("--------------------");
+            System.out.println("Id: " + user.getIdUser());
+            System.out.println("Nombre: " + user.getName());
+            System.out.println("Apellido: " + user.getUserName());
+            System.out.println("Nombre de usuario: " + user.getUserName());
+            System.out.println("email: " + user.getEmail());
+            System.out.println("Estado: " + user.getAlta());
+            System.out.println("--------------------");
+
+            System.out.println("Ingrese el dato a modificar");
+            System.out.println("1. Nombre");
+            System.out.println("2. Apellido");
+            System.out.println("3. UserName");
+            System.out.println("4. email");
+            System.out.println("5. Reactivar usuario");
+            System.out.println("6. Volver");
+
+            sc.nextLine();
+
+            String opcionDatoAModificar = sc.nextLine();
+
+            switch (opcionDatoAModificar) {
+                case "1" -> {
+                    System.out.println("Ingrese el nuevo nombre");
+                    user.setName(ValidadorEntradas.validarEntrada().toUpperCase());
+                }
+                case "2" -> {
+                    System.out.println("Ingrese el nuevo apellido");
+                    user.setLastName(ValidadorEntradas.validarEntrada().toUpperCase());
+                }
+                case "3" -> {
+                    System.out.println("Ingrese el nuevo userName");
+                    user.setUserName(ValidadorEntradas.validarEntrada().toUpperCase());
+                }
+                case "4" -> {
+                    System.out.println("Ingrese el nuevo email");
+                    user.setEmail(ValidadorEntradas.validarEntrada().toUpperCase());
+                }
+                case "5" -> {
+                    if(!user.getAlta()){
+                        user.setAlta(true);
+                        System.out.println("El empleado se reactivó correctamente");
+                    }else System.out.println("El emplado está actualmente activo");
+                }
+                case "6" -> ModuloRRHH.moduloRRHH();
+                default -> {
+                    System.out.println("opcion no válida");
+                    modificarEmpleadoRrhh();
+                }
+            }
+
+            // Realizar la actualización
+            entityManager.getTransaction().commit();
+            System.out.println("Cliente actualizado exitosamente.");
+        } catch (Exception e) {
+            System.out.println(e);
+            if (entityManager.getTransaction().isActive()) {
+                entityManager.getTransaction().rollback();
+            }
+            e.printStackTrace();
+        } finally {
+            // Cerrar el EntityManager y el EntityManagerFactory
+            entityManager.close();
+            emf.close();
+        }
+        moduloRRHH();
+    }
+
+    private static void modificarEmpleadoEspecialista() {
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("jpa");
+        EntityManager entityManager = emf.createEntityManager();
+
+        System.out.println("Ingrese el username del empleado Especialista a modificar");
+        Scanner sc = new Scanner(System.in);
+        String userName = sc.next();
+
+        try {
+            entityManager.getTransaction().begin();
+
+            String jpql = "SELECT c FROM SpecialistUser c WHERE c.userName = :userName";
+            TypedQuery<SpecialistUser> query = entityManager.createQuery(jpql, SpecialistUser.class);
+            query.setParameter("userName", userName);
+
+            SpecialistUser user = query.getSingleResult();
+
+            System.out.println("--------------------");
+            System.out.println("Id: " + user.getIdUser());
+            System.out.println("Nombre: " + user.getName());
+            System.out.println("Apellido: " + user.getUserName());
+            System.out.println("Nombre de usuario: " + user.getUserName());
+            System.out.println("email: " + user.getEmail());
+            System.out.println("Estado: " + user.getAlta());
+            System.out.println("Especialidades");
+            List<OfferedService> ofServices = user.getOfferedServices();
+            for(OfferedService ofService : ofServices){
+                System.out.println(ofService.getOfferedServiceName());
+            }
+            System.out.println("--------------------");
+
+            System.out.println("Ingrese el dato a modificar");
+            System.out.println("1. Nombre");
+            System.out.println("2. Apellido");
+            System.out.println("3. UserName");
+            System.out.println("4. email");
+            System.out.println("5. Reactivar usuario");
+            System.out.println("6. Volver");
+
+            sc.nextLine();
+
+            String opcionDatoAModificar = sc.nextLine();
+
+            switch (opcionDatoAModificar) {
+                case "1" -> {
+                    System.out.println("Ingrese el nuevo nombre");
+                    user.setName(ValidadorEntradas.validarEntrada().toUpperCase());
+                }
+                case "2" -> {
+                    System.out.println("Ingrese el nuevo apellido");
+                    user.setLastName(ValidadorEntradas.validarEntrada().toUpperCase());
+                }
+                case "3" -> {
+                    System.out.println("Ingrese el nuevo userName");
+                    user.setUserName(ValidadorEntradas.validarEntrada().toUpperCase());
+                }
+                case "4" -> {
+                    System.out.println("Ingrese el nuevo email");
+                    user.setEmail(ValidadorEntradas.validarEntrada().toUpperCase());
+                }
+                case "5" -> {
+                    if(!user.getAlta()){
+                        user.setAlta(true);
+                        System.out.println("El empleado se reactivó correctamente");
+                    }else System.out.println("El emplado está actualmente activo");
+                }
+                case "6" -> ModuloRRHH.moduloRRHH();
+                default -> {
+                    System.out.println("opcion no válida");
+                    modificarEmpleadoRrhh();
+                }
+            }
+
+            // Realizar la actualización
+            entityManager.getTransaction().commit();
+            System.out.println("Cliente actualizado exitosamente.");
+        } catch (Exception e) {
+            System.out.println("No se encontró el usuario");
+            modificarEmpleadoEspecialista();
+            if (entityManager.getTransaction().isActive()) {
+                entityManager.getTransaction().rollback();
+            }
+            e.printStackTrace();
+        } finally {
+            // Cerrar el EntityManager y el EntityManagerFactory
+            entityManager.close();
+            emf.close();
+        }
+        moduloRRHH();
+    }
+
+    private static void modificarEmpleadoMesaDeAyuda() {
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("jpa");
+        EntityManager entityManager = emf.createEntityManager();
+
+        System.out.println("Ingrese el username del empleado Mesa de ayuda a modificar");
+        Scanner sc = new Scanner(System.in);
+        String userName = sc.next();
+
+        try {
+            entityManager.getTransaction().begin();
+
+            String jpql = "SELECT c FROM HelpDeskUser c WHERE c.userName = :userName";
+            TypedQuery<HelpDeskUser> query = entityManager.createQuery(jpql, HelpDeskUser.class);
+            query.setParameter("userName", userName);
+
+            HelpDeskUser user = query.getSingleResult();
+
+            System.out.println("--------------------");
+            System.out.println("Id: " + user.getIdUser());
+            System.out.println("Nombre: " + user.getName());
+            System.out.println("Apellido: " + user.getUserName());
+            System.out.println("Nombre de usuario: " + user.getUserName());
+            System.out.println("email: " + user.getEmail());
+            System.out.println("Estado: " + user.getAlta());
+            System.out.println("--------------------");
+
+            System.out.println("Ingrese el dato a modificar");
+            System.out.println("1. Nombre");
+            System.out.println("2. Apellido");
+            System.out.println("3. UserName");
+            System.out.println("4. email");
+            System.out.println("5. Reactivar usuario");
+            System.out.println("6. Volver");
+
+            sc.nextLine();
+
+            String opcionDatoAModificar = sc.nextLine();
+
+            switch (opcionDatoAModificar) {
+                case "1" -> {
+                    System.out.println("Ingrese el nuevo nombre");
+                    user.setName(ValidadorEntradas.validarEntrada().toUpperCase());
+                }
+                case "2" -> {
+                    System.out.println("Ingrese el nuevo apellido");
+                    user.setLastName(ValidadorEntradas.validarEntrada().toUpperCase());
+                }
+                case "3" -> {
+                    System.out.println("Ingrese el nuevo userName");
+                    user.setUserName(ValidadorEntradas.validarEntrada().toUpperCase());
+                }
+                case "4" -> {
+                    System.out.println("Ingrese el nuevo email");
+                    user.setEmail(ValidadorEntradas.validarEntrada().toUpperCase());
+                }
+                case "5" -> {
+                    if(!user.getAlta()){
+                        user.setAlta(true);
+                        System.out.println("El empleado se reactivó correctamente");
+                    }else System.out.println("El emplado está actualmente activo");
+                }
+                case "6" -> ModuloRRHH.moduloRRHH();
+                default -> {
+                    System.out.println("opcion no válida");
+                    modificarEmpleadoRrhh();
+                }
+            }
+
+            // Realizar la actualización
+            entityManager.getTransaction().commit();
+            System.out.println("Cliente actualizado exitosamente.");
+        } catch (Exception e) {
+            System.out.println(e);
+            if (entityManager.getTransaction().isActive()) {
+                entityManager.getTransaction().rollback();
+            }
+            e.printStackTrace();
+        } finally {
+            // Cerrar el EntityManager y el EntityManagerFactory
+            entityManager.close();
+            emf.close();
+        }
+        moduloRRHH();
+    }
+
+    public static void modificarEmpleadoRrhh() {
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("jpa");
+        EntityManager entityManager = emf.createEntityManager();
+
+        System.out.println("Ingrese el username del empleado de rrhh a modificar");
+        Scanner sc = new Scanner(System.in);
+        String userName = sc.next();
+
+        try {
+            entityManager.getTransaction().begin();
+
+            String jpql = "SELECT c FROM RrhhUser c WHERE c.userName = :userName";
+            TypedQuery<RrhhUser> query = entityManager.createQuery(jpql, RrhhUser.class);
+            query.setParameter("userName", userName);
+
+            RrhhUser user = query.getSingleResult();
+
+            System.out.println("--------------------");
+            System.out.println("Id: " + user.getIdUser());
+            System.out.println("Nombre: " + user.getName());
+            System.out.println("Apellido: " + user.getUserName());
+            System.out.println("Nombre de usuario: " + user.getUserName());
+            System.out.println("email: " + user.getEmail());
+            System.out.println("Estado: " + user.getAlta());
+            System.out.println("--------------------");
+
+            System.out.println("Ingrese el dato a modificar");
+            System.out.println("1. Nombre");
+            System.out.println("2. Apellido");
+            System.out.println("3. UserName");
+            System.out.println("4. email");
+            System.out.println("5. Reactivar usuario");
+            System.out.println("6. Volver");
+
+            sc.nextLine();
+
+            String opcionDatoAModificar = sc.nextLine();
+
+            switch (opcionDatoAModificar) {
+                case "1" -> {
+                    System.out.println("Ingrese el nuevo nombre");
+                    user.setName(ValidadorEntradas.validarEntrada().toUpperCase());
+                }
+                case "2" -> {
+                    System.out.println("Ingrese el nuevo apellido");
+                    user.setLastName(ValidadorEntradas.validarEntrada().toUpperCase());
+                }
+                case "3" -> {
+                    System.out.println("Ingrese el nuevo userName");
+                    user.setUserName(ValidadorEntradas.validarEntrada().toUpperCase());
+                }
+                case "4" -> {
+                    System.out.println("Ingrese el nuevo email");
+                    user.setEmail(ValidadorEntradas.validarEntrada().toUpperCase());
+                }
+                case "5" -> {
+                    if(!user.getAlta()){
+                        user.setAlta(true);
+                        System.out.println("El empleado se reactivó correctamente");
+                    }else System.out.println("El emplado está actualmente activo");
+                }
+                case "6" -> ModuloRRHH.moduloRRHH();
+                default -> {
+                    System.out.println("opcion no válida");
+                    modificarEmpleadoRrhh();
+                }
+            }
+
+            // Realizar la actualización
+            entityManager.getTransaction().commit();
+            System.out.println("Cliente actualizado exitosamente.");
+        } catch (Exception e) {
+            System.out.println(e);
+            if (entityManager.getTransaction().isActive()) {
+                entityManager.getTransaction().rollback();
+            }
+            e.printStackTrace();
+        } finally {
+            // Cerrar el EntityManager y el EntityManagerFactory
+            entityManager.close();
+            emf.close();
+        }
+        moduloRRHH();
     }
 
     private static void reportePorDesempeno() {
@@ -69,31 +677,37 @@ public class ModuloRRHH {
             }
         }
     }
+
     private static void reportePorFecha(){
         Scanner sc = new Scanner (System.in);
 
         System.out.println("Ingrese la fecha de inicio");
         System.out.println("Día (dd)");
-        int diaInicio = sc.nextInt();
+        String diaInicio = sc.nextLine();
         System.out.println("Mes (mm)");
-        int mesInicio = sc.nextInt();
+        String mesInicio = sc.nextLine();
         System.out.println("Año (aaaa)");
-        int anoInicio = sc.nextInt();
+        String anoInicio = sc.nextLine();
         System.out.println("Ingrese la fecha de fin");
         System.out.println("Día (dd)");
-        int diaFin = sc.nextInt();
+        String diaFin = sc.nextLine();
         System.out.println("Mes (mm)");
-        int mesFin = sc.nextInt();
+        String mesFin = sc.nextLine();
         System.out.println("Año (aaaa)");
-        int anoFin = sc.nextInt();
+        String anoFin = sc.nextLine();
         Map<String, Integer> frecuenciaEspecialistas = new HashMap<>();
+        LocalDate fechaInicio = null;
+        LocalDate fechaFin = null;
 
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("jpa");
         EntityManager entityManager = emf.createEntityManager();
-        LocalDate fechaInicio = LocalDate.of(anoInicio, mesInicio, diaInicio);
-        LocalDate fechaFin = LocalDate.of(anoFin, mesFin, diaFin);
-        System.out.println(fechaInicio);
-        System.out.println(fechaFin);
+        try {
+            fechaInicio = LocalDate.of(Integer.parseInt(anoInicio), Integer.parseInt(mesInicio), Integer.parseInt(diaInicio));
+            fechaFin = LocalDate.of(Integer.parseInt(anoFin), Integer.parseInt(mesFin), Integer.parseInt(diaFin));
+        }catch (Exception e){
+            System.out.println(e);
+            reportePorFecha();
+        }
 
         try {
             String jpql = "SELECT c FROM Incident c LEFT JOIN FETCH c.offeredService os WHERE c.incidentState = 'RESUELTO' AND c.resolutionDate BETWEEN :fechaInicio AND :fechaFin";
@@ -156,28 +770,35 @@ public class ModuloRRHH {
         }
         System.out.println("Ingrese la fecha de inicio");
         System.out.println("Día (dd)");
-        int diaInicio = sc.nextInt();
+        String diaInicio = sc.nextLine();
         System.out.println("Mes (mm)");
-        int mesInicio = sc.nextInt();
+        String mesInicio = sc.nextLine();
         System.out.println("Año (aaaa)");
-        int anoInicio = sc.nextInt();
+        String anoInicio = sc.nextLine();
         System.out.println("Ingrese la fecha de fin");
         System.out.println("Día (dd)");
-        int diaFin = sc.nextInt();
+        String diaFin = sc.nextLine();
         System.out.println("Mes (mm)");
-        int mesFin = sc.nextInt();
+        String mesFin = sc.nextLine();
         System.out.println("Año (aaaa)");
-        int anoFin = sc.nextInt();
+        String anoFin = sc.nextLine();
         Map<String, Integer> frecuenciaEspecialistas = new HashMap<>();
+        LocalDate fechaInicio = null;
+        LocalDate fechaFin = null;
+
 
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("jpa");
         EntityManager entityManager = emf.createEntityManager();
-        LocalDate fechaInicio = LocalDate.of(anoInicio, mesInicio, diaInicio);
-        LocalDate fechaFin = LocalDate.of(anoFin, mesFin, diaFin);
+        try {
+            fechaInicio = LocalDate.of(Integer.parseInt(anoInicio), Integer.parseInt(mesInicio), Integer.parseInt(diaInicio));
+            fechaFin = LocalDate.of(Integer.parseInt(anoFin), Integer.parseInt(mesFin), Integer.parseInt(diaFin));
+        }catch (Exception e){
+            System.out.println(e);
+            reportePorFechaServicio();
+        }
+
         System.out.println(fechaInicio);
         System.out.println(fechaFin);
-//            String jpqlCliente = "SELECT c FROM Client c LEFT JOIN FETCH c.contractedOfferedServices cs WHERE c.cuit = :cuit";
-//            String jpql = "SELECT DISTINCT c FROM Client c LEFT JOIN FETCH c.contractedOfferedServices";
         try {
             String jpql = "SELECT c FROM Incident c LEFT JOIN FETCH c.offeredService os WHERE c.incidentState = 'RESUELTO' AND c.resolutionDate BETWEEN :fechaInicio AND :fechaFin AND os.offeredServiceName = :especialidad";
             TypedQuery<Incident> query = entityManager.createQuery(jpql, Incident.class);
@@ -281,350 +902,6 @@ public class ModuloRRHH {
 
 }
 
-    private static void modificarEmpleadoComercial() {
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("jpa");
-        EntityManager entityManager = emf.createEntityManager();
-
-        System.out.println("Ingrese el username del empleado comercial a modificar");
-        Scanner sc = new Scanner(System.in);
-        String userName = sc.next();
-
-        try {
-            entityManager.getTransaction().begin();
-
-            String jpql = "SELECT c FROM ComercialUser c WHERE c.userName = :userName";
-            TypedQuery<ComercialUser> query = entityManager.createQuery(jpql, ComercialUser.class);
-            query.setParameter("userName", userName);
-
-            ComercialUser user = query.getSingleResult();
-
-            System.out.println("--------------------");
-            System.out.println("Id: " + user.getIdUser());
-            System.out.println("Nombre: " + user.getName());
-            System.out.println("Apellido: " + user.getUserName());
-            System.out.println("Nombre de usuario: " + user.getUserName());
-            System.out.println("email: " + user.getEmail());
-            System.out.println("Estado: " + user.getAlta());
-            System.out.println("--------------------");
-
-            System.out.println("Ingrese el dato a modificar");
-            System.out.println("1. Nombre");
-            System.out.println("2. Apellido");
-            System.out.println("3. UserName");
-            System.out.println("4. email");
-            System.out.println("5. Reactivar usuario");
-            System.out.println("6. Volver");
-
-            sc.nextLine();
-
-            String opcionDatoAModificar = sc.nextLine();
-
-            switch (opcionDatoAModificar) {
-                case "1" -> {
-                    System.out.println("Ingrese el nuevo nombre");
-                    user.setName(ValidadorEntradas.validarEntrada());
-                }
-                case "2" -> {
-                    System.out.println("Ingrese el nuevo apellido");
-                    user.setLastName(ValidadorEntradas.validarEntrada());
-                }
-                case "3" -> {
-                    System.out.println("Ingrese el nuevo userName");
-                    user.setUserName(ValidadorEntradas.validarEntrada());
-                }
-                case "4" -> {
-                    System.out.println("Ingrese el nuevo email");
-                    user.setEmail(ValidadorEntradas.validarEntrada());
-                }
-                case "5" -> {
-                    if(!user.getAlta()){
-                        user.setAlta(true);
-                        System.out.println("El empleado se reactivó correctamente");
-                    }else System.out.println("El emplado está actualmente activo");
-                }
-                case "6" -> ModuloRRHH.moduloRRHH();
-                default -> {
-                    System.out.println("opcion no válida");
-                    modificarEmpleadoRrhh();
-                }
-            }
-
-            // Realizar la actualización
-            entityManager.getTransaction().commit();
-            System.out.println("Cliente actualizado exitosamente.");
-        } catch (Exception e) {
-            System.out.println(e);
-            if (entityManager.getTransaction().isActive()) {
-                entityManager.getTransaction().rollback();
-            }
-            e.printStackTrace();
-        } finally {
-            // Cerrar el EntityManager y el EntityManagerFactory
-            entityManager.close();
-            emf.close();
-        }
-        moduloRRHH();
-    }
-
-    private static void altaUser() {
-        Scanner scanner = new Scanner(System.in);
-
-        System.out.println("Ingrese el nombre del nuevo usuario");
-        String nombre = ValidadorEntradas.validarEntrada();
-
-        System.out.println("Ingrese el apellido del nuevo usuario");
-        String apellido = ValidadorEntradas.validarEntrada();
-
-        System.out.println("Ingrese el username del nuevo usuario ");
-        String userName = ValidadorEntradas.validarEntrada();
-
-        System.out.println("Ingrese el email del nuevo usuario");
-        String email = ValidadorEntradas.validarEntrada();
-
-        asignarRol(nombre, apellido, userName, email);
-
-    }
-
-    private static void modificarEmpleadoEspecialista() {
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("jpa");
-        EntityManager entityManager = emf.createEntityManager();
-
-        System.out.println("Ingrese el username del empleado Especialista a modificar");
-        Scanner sc = new Scanner(System.in);
-        String userName = sc.next();
-
-        try {
-            entityManager.getTransaction().begin();
-
-            String jpql = "SELECT c FROM SpecialistUser c WHERE c.userName = :userName";
-            TypedQuery<SpecialistUser> query = entityManager.createQuery(jpql, SpecialistUser.class);
-            query.setParameter("userName", userName);
-
-            SpecialistUser user = query.getSingleResult();
-
-            System.out.println("--------------------");
-            System.out.println("Id: " + user.getIdUser());
-            System.out.println("Nombre: " + user.getName());
-            System.out.println("Apellido: " + user.getUserName());
-            System.out.println("Nombre de usuario: " + user.getUserName());
-            System.out.println("email: " + user.getEmail());
-            System.out.println("Estado: " + user.getAlta());
-            System.out.println("Especialidades");
-            List<OfferedService> ofServices = user.getOfferedServices();
-            for(OfferedService ofService : ofServices){
-                System.out.println(ofService.getOfferedServiceName());
-            }
-            System.out.println("--------------------");
-
-            System.out.println("Ingrese el dato a modificar");
-            System.out.println("1. Nombre");
-            System.out.println("2. Apellido");
-            System.out.println("3. UserName");
-            System.out.println("4. email");
-            System.out.println("5. Reactivar usuario");
-            System.out.println("6. Volver");
-
-            sc.nextLine();
-
-            String opcionDatoAModificar = sc.nextLine();
-
-            switch (opcionDatoAModificar) {
-                case "1" -> {
-                    System.out.println("Ingrese el nuevo nombre");
-                    user.setName(ValidadorEntradas.validarEntrada());
-                }
-                case "2" -> {
-                    System.out.println("Ingrese el nuevo apellido");
-                    user.setLastName(ValidadorEntradas.validarEntrada());
-                }
-                case "3" -> {
-                    System.out.println("Ingrese el nuevo userName");
-                    user.setUserName(ValidadorEntradas.validarEntrada());
-                }
-                case "4" -> {
-                    System.out.println("Ingrese el nuevo email");
-                    user.setEmail(ValidadorEntradas.validarEntrada());
-                }
-                case "5" -> {
-                    if(!user.getAlta()){
-                        user.setAlta(true);
-                        System.out.println("El empleado se reactivó correctamente");
-                    }else System.out.println("El emplado está actualmente activo");
-                }
-                case "6" -> ModuloRRHH.moduloRRHH();
-                default -> {
-                    System.out.println("opcion no válida");
-                    modificarEmpleadoRrhh();
-                }
-            }
-
-            // Realizar la actualización
-            entityManager.getTransaction().commit();
-            System.out.println("Cliente actualizado exitosamente.");
-        } catch (Exception e) {
-            System.out.println("No se encontró el usuario");
-            modificarEmpleadoEspecialista();
-            if (entityManager.getTransaction().isActive()) {
-                entityManager.getTransaction().rollback();
-            }
-            e.printStackTrace();
-        } finally {
-            // Cerrar el EntityManager y el EntityManagerFactory
-            entityManager.close();
-            emf.close();
-        }
-        moduloRRHH();
-    }
-
-    private static void modificarEmpleadoMesaDeAyuda() {
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("jpa");
-        EntityManager entityManager = emf.createEntityManager();
-
-        System.out.println("Ingrese el username del empleado Mesa de ayuda a modificar");
-        Scanner sc = new Scanner(System.in);
-        String userName = sc.next();
-
-        try {
-            entityManager.getTransaction().begin();
-
-            String jpql = "SELECT c FROM HelpDeskUser c WHERE c.userName = :userName";
-            TypedQuery<HelpDeskUser> query = entityManager.createQuery(jpql, HelpDeskUser.class);
-            query.setParameter("userName", userName);
-
-            HelpDeskUser user = query.getSingleResult();
-
-            System.out.println("--------------------");
-            System.out.println("Id: " + user.getIdUser());
-            System.out.println("Nombre: " + user.getName());
-            System.out.println("Apellido: " + user.getUserName());
-            System.out.println("Nombre de usuario: " + user.getUserName());
-            System.out.println("email: " + user.getEmail());
-            System.out.println("Estado: " + user.getAlta());
-            System.out.println("--------------------");
-
-            System.out.println("Ingrese el dato a modificar");
-            System.out.println("1. Nombre");
-            System.out.println("2. Apellido");
-            System.out.println("3. UserName");
-            System.out.println("4. email");
-            System.out.println("5. Reactivar usuario");
-            System.out.println("6. Volver");
-
-            sc.nextLine();
-
-            String opcionDatoAModificar = sc.nextLine();
-
-            switch (opcionDatoAModificar) {
-                case "1" -> {
-                    System.out.println("Ingrese el nuevo nombre");
-                    user.setName(ValidadorEntradas.validarEntrada());
-                }
-                case "2" -> {
-                    System.out.println("Ingrese el nuevo apellido");
-                    user.setLastName(ValidadorEntradas.validarEntrada());
-                }
-                case "3" -> {
-                    System.out.println("Ingrese el nuevo userName");
-                    user.setUserName(ValidadorEntradas.validarEntrada());
-                }
-                case "4" -> {
-                    System.out.println("Ingrese el nuevo email");
-                    user.setEmail(ValidadorEntradas.validarEntrada());
-                }
-                case "5" -> {
-                    if(!user.getAlta()){
-                        user.setAlta(true);
-                        System.out.println("El empleado se reactivó correctamente");
-                    }else System.out.println("El emplado está actualmente activo");
-                }
-                case "6" -> ModuloRRHH.moduloRRHH();
-                default -> {
-                    System.out.println("opcion no válida");
-                    modificarEmpleadoRrhh();
-                }
-            }
-
-            // Realizar la actualización
-            entityManager.getTransaction().commit();
-            System.out.println("Cliente actualizado exitosamente.");
-        } catch (Exception e) {
-            System.out.println(e);
-            if (entityManager.getTransaction().isActive()) {
-                entityManager.getTransaction().rollback();
-            }
-            e.printStackTrace();
-        } finally {
-            // Cerrar el EntityManager y el EntityManagerFactory
-            entityManager.close();
-            emf.close();
-        }
-        moduloRRHH();
-    }
-
-    private static void asignarRol(String nombre, String apellido, String userName, String email) {
-        Scanner scanner = new Scanner(System.in);
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("jpa");
-        EntityManager entityManager = emf.createEntityManager();
-        entityManager.getTransaction().begin();
-
-        System.out.println("Ingrese el numero de rol del nuevo usuario");
-        System.out.println("1. RRHH");
-        System.out.println("2. Comercial");
-        System.out.println("3. Mesa de ayuda");
-        System.out.println("4. Especialista");
-
-        String opcion = null;
-
-        opcion = scanner.nextLine();
-
-
-        switch (opcion) {
-            case "1" -> {
-                RrhhUser rrhhUser = new RrhhUser();
-                rrhhUser.setName(nombre.toUpperCase());
-                rrhhUser.setLastName(apellido.toUpperCase());
-                rrhhUser.setUserName(userName.toUpperCase());
-                rrhhUser.setEmail(email.toUpperCase());
-                rrhhUser.setAlta(true);
-                entityManager.persist(rrhhUser);
-            }
-            case "2" -> {
-                ComercialUser comercialUser = new ComercialUser();
-                comercialUser.setName(nombre.toUpperCase());
-                comercialUser.setLastName(apellido.toUpperCase());
-                comercialUser.setUserName(userName.toUpperCase());
-                comercialUser.setEmail(email.toUpperCase());
-                comercialUser.setAlta(true);
-                entityManager.persist(comercialUser);
-            }
-            case "3" -> {
-                HelpDeskUser helpDeskUser = new HelpDeskUser();
-                helpDeskUser.setName(nombre.toUpperCase());
-                helpDeskUser.setLastName(apellido.toUpperCase());
-                helpDeskUser.setUserName(userName.toUpperCase());
-                helpDeskUser.setEmail(email.toUpperCase());
-                helpDeskUser.setAlta(true);
-                entityManager.persist(helpDeskUser);
-            }
-            case "4" -> {
-                SpecialistUser specialistUser = new SpecialistUser();
-                specialistUser.setName(nombre.toUpperCase());
-                specialistUser.setLastName(apellido.toUpperCase());
-                specialistUser.setUserName(userName.toUpperCase());
-                specialistUser.setEmail(email.toUpperCase());
-                specialistUser.setAlta(true);
-                specialistUser.setOfferedServices(asignarEspecialidadesANuevoEspecialista());
-                entityManager.persist(specialistUser);
-            }
-            default -> {
-                System.out.println("opcion incorrecta");
-                asignarRol(nombre, apellido, userName, email);
-            }
-        }
-        entityManager.getTransaction().commit();
-        moduloRRHH();
-    }
-
     public static List<OfferedService> asignarEspecialidadesANuevoEspecialista(){
         List<OfferedService> offeredServices = new ArrayList<>();
         Scanner scanner = new Scanner(System.in);
@@ -675,91 +952,6 @@ public class ModuloRRHH {
 
         return offeredServices;
 
-    }
-
-    public static void modificarEmpleadoRrhh() {
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("jpa");
-        EntityManager entityManager = emf.createEntityManager();
-
-        System.out.println("Ingrese el username del empleado de rrhh a modificar");
-        Scanner sc = new Scanner(System.in);
-        String userName = sc.next();
-
-        try {
-            entityManager.getTransaction().begin();
-
-            String jpql = "SELECT c FROM RrhhUser c WHERE c.userName = :userName";
-            TypedQuery<RrhhUser> query = entityManager.createQuery(jpql, RrhhUser.class);
-            query.setParameter("userName", userName);
-
-            RrhhUser user = query.getSingleResult();
-
-            System.out.println("--------------------");
-            System.out.println("Id: " + user.getIdUser());
-            System.out.println("Nombre: " + user.getName());
-            System.out.println("Apellido: " + user.getUserName());
-            System.out.println("Nombre de usuario: " + user.getUserName());
-            System.out.println("email: " + user.getEmail());
-            System.out.println("Estado: " + user.getAlta());
-            System.out.println("--------------------");
-
-            System.out.println("Ingrese el dato a modificar");
-            System.out.println("1. Nombre");
-            System.out.println("2. Apellido");
-            System.out.println("3. UserName");
-            System.out.println("4. email");
-            System.out.println("5. Reactivar usuario");
-            System.out.println("6. Volver");
-
-            sc.nextLine();
-
-            String opcionDatoAModificar = sc.nextLine();
-
-            switch (opcionDatoAModificar) {
-                case "1" -> {
-                    System.out.println("Ingrese el nuevo nombre");
-                    user.setName(ValidadorEntradas.validarEntrada());
-                }
-                case "2" -> {
-                    System.out.println("Ingrese el nuevo apellido");
-                    user.setLastName(ValidadorEntradas.validarEntrada());
-                }
-                case "3" -> {
-                    System.out.println("Ingrese el nuevo userName");
-                    user.setUserName(ValidadorEntradas.validarEntrada());
-                }
-                case "4" -> {
-                    System.out.println("Ingrese el nuevo email");
-                    user.setEmail(ValidadorEntradas.validarEntrada());
-                }
-                case "5" -> {
-                    if(!user.getAlta()){
-                        user.setAlta(true);
-                        System.out.println("El empleado se reactivó correctamente");
-                    }else System.out.println("El emplado está actualmente activo");
-                }
-                case "6" -> ModuloRRHH.moduloRRHH();
-                default -> {
-                    System.out.println("opcion no válida");
-                    modificarEmpleadoRrhh();
-                }
-            }
-
-            // Realizar la actualización
-            entityManager.getTransaction().commit();
-            System.out.println("Cliente actualizado exitosamente.");
-        } catch (Exception e) {
-            System.out.println(e);
-            if (entityManager.getTransaction().isActive()) {
-                entityManager.getTransaction().rollback();
-            }
-            e.printStackTrace();
-        } finally {
-            // Cerrar el EntityManager y el EntityManagerFactory
-            entityManager.close();
-            emf.close();
-        }
-        moduloRRHH();
     }
 
       public static void buscarEmpleadoPorUserName(){
@@ -1059,201 +1251,6 @@ public class ModuloRRHH {
         ModuloRRHH.moduloRRHH();
     }
 
-    public static void verTodosLosEmpleados() {
-        ModuloRRHH.verEmpleadosRRHH();
-        ModuloRRHH.verEmpleadosComerciales();
-        ModuloRRHH.verEmpleadosMesaDeAyuda();
-        ModuloRRHH.verEmpleadosEspecialistas();
-
-        ModuloRRHH.moduloRRHH();
-    }
-
-    private static void verEmpleadosEspecialistas() {
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("jpa");
-        EntityManager entityManager = emf.createEntityManager();
-
-        entityManager.getTransaction().begin();
-        System.out.println("**************");
-        System.out.println("Empleados Especialistas");
-        System.out.println("**************");
-
-        try{
-            String jpql = "SELECT e FROM SpecialistUser e";
-            TypedQuery<SpecialistUser> query = entityManager.createQuery(jpql, SpecialistUser.class);
-            List<SpecialistUser> user = query.getResultList();
-
-            // Mostrar la información
-            for (SpecialistUser empleado : user) {
-                System.out.println("--------------------");
-                System.out.println("Id: " + empleado.getIdUser());
-                System.out.println("Nombre: " + empleado.getName());
-                System.out.println("Apellido: " + empleado.getUserName());
-                System.out.println("Nombre de usuario: " + empleado.getUserName());
-                System.out.println("email: " + empleado.getEmail());
-                System.out.println("Estado: " + empleado.getAlta());
-                System.out.println("Especialidades");
-                for(OfferedService ofSer : empleado.getOfferedServices()){
-                    System.out.println(ofSer.getOfferedServiceName());
-                }
-                System.out.println("--------------------");
-            }
-
-            // Commit de la transacción
-            entityManager.getTransaction().commit();
-        } catch (Exception e) {
-            System.out.println(e);
-            if (entityManager.getTransaction().isActive()) {
-                entityManager.getTransaction().rollback();
-            }
-            e.printStackTrace();
-        } finally {
-            // Cerrar el EntityManager y el EntityManagerFactory
-            entityManager.close();
-            emf.close();
-        }
-    }
-
-    private static void verEmpleadosMesaDeAyuda() {
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("jpa");
-        EntityManager entityManager = emf.createEntityManager();
-
-        entityManager.getTransaction().begin();
-        System.out.println("**************");
-        System.out.println("Empleados Mesa de ayuda");
-        System.out.println("**************");
-
-        try{
-            String jpql = "SELECT e FROM HelpDeskUser e";
-            TypedQuery<HelpDeskUser> query = entityManager.createQuery(jpql, HelpDeskUser.class);
-            List<HelpDeskUser> user = query.getResultList();
-
-            // Mostrar la información
-            for (HelpDeskUser empleado : user) {
-                System.out.println("--------------------");
-                System.out.println("Id: " + empleado.getIdUser());
-                System.out.println("Nombre: " + empleado.getName());
-                System.out.println("Apellido: " + empleado.getUserName());
-                System.out.println("Nombre de usuario: " + empleado.getUserName());
-                System.out.println("email: " + empleado.getEmail());
-                System.out.println("Estado: " + empleado.getAlta());
-                System.out.println("--------------------");
-            }
-
-            // Commit de la transacción
-            entityManager.getTransaction().commit();
-        } catch (Exception e) {
-            System.out.println(e);
-            if (entityManager.getTransaction().isActive()) {
-                entityManager.getTransaction().rollback();
-            }
-            e.printStackTrace();
-        } finally {
-            // Cerrar el EntityManager y el EntityManagerFactory
-            entityManager.close();
-            emf.close();
-        }
-
-
-    }
-
-    private static void verEmpleadosComerciales() {
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("jpa");
-        EntityManager entityManager = emf.createEntityManager();
-
-        entityManager.getTransaction().begin();
-        System.out.println("**************");
-        System.out.println("Empleados Comerciales");
-        System.out.println("**************");
-
-        try{
-            String jpql = "SELECT e FROM ComercialUser e";
-            TypedQuery<ComercialUser> query = entityManager.createQuery(jpql, ComercialUser.class);
-            List<ComercialUser> user = query.getResultList();
-
-            // Mostrar la información
-            for (ComercialUser empleado : user) {
-                System.out.println("--------------------");
-                System.out.println("Id: " + empleado.getIdUser());
-                System.out.println("Nombre: " + empleado.getName());
-                System.out.println("Apellido: " + empleado.getUserName());
-                System.out.println("Nombre de usuario: " + empleado.getUserName());
-                System.out.println("email: " + empleado.getEmail());
-                System.out.println("Estado: " + empleado.getAlta());
-                System.out.println("--------------------");
-            }
-
-            // Commit de la transacción
-            entityManager.getTransaction().commit();
-        } catch (Exception e) {
-            System.out.println(e);
-            if (entityManager.getTransaction().isActive()) {
-                entityManager.getTransaction().rollback();
-            }
-            e.printStackTrace();
-        } finally {
-            // Cerrar el EntityManager y el EntityManagerFactory
-            entityManager.close();
-            emf.close();
-        }
-    }
-
-    private static void verEmpleadosRRHH() {
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("jpa");
-        EntityManager entityManager = emf.createEntityManager();
-
-        entityManager.getTransaction().begin();
-        System.out.println("**************");
-        System.out.println("Empleados RRHH");
-        System.out.println("**************");
-
-        try{
-            String jpql = "SELECT e FROM RrhhUser e";
-            TypedQuery<RrhhUser> query = entityManager.createQuery(jpql, RrhhUser.class);
-            List<RrhhUser> user = query.getResultList();
-
-            // Mostrar la información
-            for (RrhhUser empleado : user) {
-                System.out.println("--------------------");
-                System.out.println("Id: " + empleado.getIdUser());
-                System.out.println("Nombre: " + empleado.getName());
-                System.out.println("Apellido: " + empleado.getUserName());
-                System.out.println("Nombre de usuario: " + empleado.getUserName());
-                System.out.println("email: " + empleado.getEmail());
-                System.out.println("Estado: " + empleado.getAlta());
-                System.out.println("--------------------");
-            }
-
-            // Commit de la transacción
-            entityManager.getTransaction().commit();
-        } catch (Exception e) {
-            System.out.println(e);
-            if (entityManager.getTransaction().isActive()) {
-                entityManager.getTransaction().rollback();
-            }
-            e.printStackTrace();
-        } finally {
-            // Cerrar el EntityManager y el EntityManagerFactory
-            entityManager.close();
-            emf.close();
-        }
-    }
-    public static void reporteDiarioDeEspecialistas() {
-        System.out.println("Este es el reporte diario");
-        System.out.println("1. Volver");
-        System.out.println("2. Salir");
-        Scanner sc = new Scanner(System.in);
-        String opcion = sc.nextLine();
-        switch (opcion) {
-            case "1":
-                ModuloMesaDeAyuda.moduloMesaDeAyuda();
-                break;
-            case "2":
-                break;
-            default:
-                System.out.println("Opción no válida");
-        }
-
-    }
 }
 
 

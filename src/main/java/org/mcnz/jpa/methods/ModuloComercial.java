@@ -114,9 +114,9 @@ public class ModuloComercial {
         }
 
         Client cliente =  new Client();
-        cliente.setBusinessName(razonSocial);
+        cliente.setBusinessName(razonSocial.toUpperCase());
         cliente.setCuit(cuit);
-        cliente.setMail(email);
+        cliente.setMail(email.toUpperCase());
         cliente.setContractedOfferedServices(servicios);
         entityManager.persist(cliente);
         entityManager.getTransaction().commit();
@@ -210,7 +210,7 @@ public class ModuloComercial {
                 case 1 -> {
                     System.out.println("Ingrese la nueva razón social:");
                     nuevoValor = sc.nextLine();
-                    cliente.setBusinessName(nuevoValor);
+                    cliente.setBusinessName(nuevoValor.toUpperCase());
                 }
                 case 2 -> {
                     System.out.println("Ingrese el nuevo Cuit:");

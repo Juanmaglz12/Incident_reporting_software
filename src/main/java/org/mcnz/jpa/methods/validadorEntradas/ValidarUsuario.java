@@ -27,9 +27,9 @@ public class ValidarUsuario {
         try {
             entityManager.getTransaction().begin();
 
-            String jpql = "SELECT c FROM RrhhUser c WHERE c.userName = :userName";
+            String jpql = "SELECT c FROM RrhhUser c WHERE c.userName = :userName AND alta = true";
             TypedQuery<RrhhUser> query = entityManager.createQuery(jpql, RrhhUser.class);
-            query.setParameter("userName", userName);
+            query.setParameter("userName", userName.toUpperCase());
 
             user = query.getSingleResult();
 
@@ -62,9 +62,9 @@ public class ValidarUsuario {
         try {
             entityManager.getTransaction().begin();
 
-            String jpql = "SELECT c FROM SpecialistUser c WHERE c.userName = :userName";
+            String jpql = "SELECT c FROM SpecialistUser c WHERE c.userName = :userName AND alta = true";
             TypedQuery<SpecialistUser> query = entityManager.createQuery(jpql, SpecialistUser.class);
-            query.setParameter("userName", userName);
+            query.setParameter("userName", userName.toUpperCase());
 
             user = query.getSingleResult();
 
@@ -98,9 +98,9 @@ public class ValidarUsuario {
         try {
             entityManager.getTransaction().begin();
 
-            String jpql = "SELECT c FROM ComercialUser c WHERE c.userName = :userName";
+            String jpql = "SELECT c FROM ComercialUser c WHERE c.userName = :userName AND alta = true";
             TypedQuery<ComercialUser> query = entityManager.createQuery(jpql, ComercialUser.class);
-            query.setParameter("userName", userName);
+            query.setParameter("userName", userName.toUpperCase());
 
             user = query.getSingleResult();
 
@@ -108,7 +108,6 @@ public class ValidarUsuario {
 
         } catch (Exception e) {
             System.out.println(e);
-            System.out.println("Usuario incorrecto");
             MenuMethods.menu();
             if (entityManager.getTransaction().isActive()) {
                 entityManager.getTransaction().rollback();
@@ -133,9 +132,9 @@ public class ValidarUsuario {
         try {
             entityManager.getTransaction().begin();
 
-            String jpql = "SELECT c FROM HelpDeskUser c WHERE c.userName = :userName";
+            String jpql = "SELECT c FROM HelpDeskUser c WHERE c.userName = :userName AND alta = true";
             TypedQuery<HelpDeskUser> query = entityManager.createQuery(jpql, HelpDeskUser.class);
-            query.setParameter("userName", userName);
+            query.setParameter("userName", userName.toUpperCase());
 
             user = query.getSingleResult();
 
